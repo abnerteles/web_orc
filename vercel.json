@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "gestao-orcamentos",
+  "name": "gestao-orcamentos-abnerteles",
   "builds": [
     {
       "src": "**/*",
