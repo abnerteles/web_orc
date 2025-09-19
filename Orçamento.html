@@ -900,6 +900,196 @@
             overflow: visible;
         }
         
+        /* Limitação de largura para monitores ultrawide */
+        body {
+            max-width: 1920px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* Container principal com largura limitada */
+        .main-wrapper {
+            max-width: 1920px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* Ajustes para telas muito grandes */
+        @media (min-width: 1920px) {
+            body {
+                max-width: 1920px;
+                margin: 0 auto;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                background: var(--bg-color);
+            }
+            
+            .navbar {
+                max-width: 1920px;
+                margin: 0 auto;
+                position: relative;
+            }
+            
+            .navbar .container-fluid {
+                max-width: 1920px;
+                margin: 0 auto;
+            }
+            
+            .sidebar {
+                position: fixed;
+                left: calc(50% - 960px);
+                max-width: 250px;
+            }
+            
+            .main-content {
+                margin-left: calc(250px + (50% - 960px));
+                max-width: calc(1920px - 250px);
+            }
+            
+            .main-content.expanded {
+                margin-left: calc(50% - 960px);
+                max-width: 1920px;
+            }
+        }
+        
+        /* Ajustes para telas médias-grandes (entre 1400px e 1920px) */
+        @media (min-width: 1400px) and (max-width: 1919px) {
+            .container-fluid {
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+        }
+        
+        /* Correções para modo escuro - Seção Personalizar */
+        [data-theme="dark"] #dashboardCustomization {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+        }
+        
+        [data-theme="dark"] #dashboardCustomization .card-header {
+            background-color: var(--card-bg);
+            border-bottom-color: var(--border-color);
+            color: var(--text-color);
+        }
+        
+        [data-theme="dark"] #dashboardCustomization .card-body {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+        
+        [data-theme="dark"] #dashboardCustomization h5,
+        [data-theme="dark"] #dashboardCustomization h6 {
+            color: var(--text-color);
+        }
+        
+        [data-theme="dark"] #dashboardCustomization .form-check-label {
+            color: var(--text-color);
+        }
+        
+        [data-theme="dark"] #dashboardCustomization .form-label {
+            color: var(--text-color);
+        }
+        
+        [data-theme="dark"] #dashboardCustomization .form-select {
+            background-color: var(--input-bg);
+            border-color: var(--input-border);
+            color: var(--text-color);
+        }
+        
+        [data-theme="dark"] #dashboardCustomization .form-select option {
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+        
+        [data-theme="dark"] #dashboardCustomization .form-check-input {
+            background-color: var(--input-bg);
+            border-color: var(--input-border);
+        }
+        
+        [data-theme="dark"] #dashboardCustomization .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        /* Manter painéis coloridos com cores originais no modo escuro */
+        [data-theme="dark"] .kpi-card.bg-primary,
+        [data-theme="dark"] .kpi-card.bg-success,
+        [data-theme="dark"] .kpi-card.bg-warning,
+        [data-theme="dark"] .kpi-card.bg-danger,
+        [data-theme="dark"] .kpi-card.bg-info {
+            color: white !important;
+        }
+        
+        [data-theme="dark"] .kpi-card.bg-primary .kpi-value,
+        [data-theme="dark"] .kpi-card.bg-success .kpi-value,
+        [data-theme="dark"] .kpi-card.bg-warning .kpi-value,
+        [data-theme="dark"] .kpi-card.bg-danger .kpi-value,
+        [data-theme="dark"] .kpi-card.bg-info .kpi-value {
+            color: white !important;
+        }
+        
+        [data-theme="dark"] .kpi-card.bg-primary .kpi-label,
+         [data-theme="dark"] .kpi-card.bg-success .kpi-label,
+         [data-theme="dark"] .kpi-card.bg-warning .kpi-label,
+         [data-theme="dark"] .kpi-card.bg-danger .kpi-label,
+         [data-theme="dark"] .kpi-card.bg-info .kpi-label {
+             color: rgba(255, 255, 255, 0.9) !important;
+         }
+         
+         /* Correções gerais para modo escuro */
+         [data-theme="dark"] .card {
+             background-color: var(--card-bg);
+             border-color: var(--border-color);
+             color: var(--text-color);
+         }
+         
+         [data-theme="dark"] .card-header {
+             background-color: var(--card-bg);
+             border-bottom-color: var(--border-color);
+             color: var(--text-color);
+         }
+         
+         [data-theme="dark"] .card-body {
+             color: var(--text-color);
+         }
+         
+         [data-theme="dark"] .form-control {
+             background-color: var(--input-bg);
+             border-color: var(--input-border);
+             color: var(--text-color);
+         }
+         
+         [data-theme="dark"] .form-control:focus {
+             background-color: var(--input-bg);
+             border-color: var(--primary);
+             color: var(--text-color);
+             box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+         }
+         
+         [data-theme="dark"] .btn-outline-secondary {
+             color: var(--text-color);
+             border-color: var(--border-color);
+         }
+         
+         [data-theme="dark"] .btn-outline-secondary:hover {
+             background-color: var(--border-color);
+             border-color: var(--border-color);
+             color: var(--text-color);
+         }
+         
+         [data-theme="dark"] .dropdown-menu {
+             background-color: var(--card-bg);
+             border-color: var(--border-color);
+         }
+         
+         [data-theme="dark"] .dropdown-item {
+             color: var(--text-color);
+         }
+         
+         [data-theme="dark"] .dropdown-item:hover {
+             background-color: var(--border-color);
+             color: var(--text-color);
+         }
+        
         /* Hover effects para cards de KPI */
         .kpi-card {
             transition: all 0.3s ease;
@@ -1148,10 +1338,17 @@
             font-size: 0.85rem;
         }
 
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            margin-bottom: 1px;
+        }
+
         .calendar-day-header {
             font-weight: 600;
             text-align: center;
-            padding: 8px 4px;
+            padding: 6px 4px;
             background-color: var(--light-bg);
             border-bottom: 1px solid var(--border-color);
         }
@@ -1163,7 +1360,7 @@
         }
 
         .calendar-date {
-            aspect-ratio: 1;
+            aspect-ratio: 1.18;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -4081,6 +4278,13 @@
          
          // ===== FUNÇÕES GLOBAIS =====
         
+        // Função para inicializar gráficos
+        function initializeCharts() {
+            if (typeof initDashboardCharts === 'function') {
+                initDashboardCharts();
+            }
+        }
+        
         // Função para inicializar o sistema
         function initializeSystem() {
             console.log('Inicializando sistema...');
@@ -4111,7 +4315,104 @@
         window.addEventListener('load', function() {
             console.log('Window load event - Bootstrap carregado');
             initializeSystem();
+            loadDashboardSettings();
         });
+        
+        // Função para carregar configurações salvas do dashboard
+        function loadDashboardSettings() {
+            try {
+                const savedSettings = localStorage.getItem('dashboardSettings');
+                if (savedSettings) {
+                    const settings = JSON.parse(savedSettings);
+                    
+                    // Aplicar configurações de widgets
+                    if (settings.widgets) {
+                        const widgetMappings = {
+                            'kpi': 'kpiCardsContainer',
+                            'charts': 'chartsContainer', 
+                            'reports': null, // Não tem container específico
+                            'recent': 'widget-recent-container',
+                            'calendar': 'widget-calendar-container',
+                            'weather': 'widget-weather-container'
+                        };
+                        
+                        Object.keys(settings.widgets).forEach(widget => {
+                            const checkbox = document.getElementById(`widget-${widget}`);
+                            const containerId = widgetMappings[widget];
+                            const container = containerId ? document.getElementById(containerId) : null;
+                            
+                            if (checkbox) {
+                                checkbox.checked = settings.widgets[widget];
+                            }
+                            
+                            if (container) {
+                                if (settings.widgets[widget]) {
+                                    container.style.display = '';
+                                    container.classList.remove('d-none');
+                                } else {
+                                    container.style.display = 'none';
+                                    container.classList.add('d-none');
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Aplicar layout
+                    if (settings.layout) {
+                        const kpiLayout = document.getElementById('kpiLayout');
+                        if (kpiLayout) {
+                            kpiLayout.value = settings.layout;
+                        }
+                        
+                        const kpiContainer = document.getElementById('kpiCardsContainer') || 
+                                           document.querySelector('.row.mb-4');
+                        
+                        if (kpiContainer) {
+                            const kpiCards = kpiContainer.querySelectorAll('.col-lg-3, .col-md-6, .col-sm-12');
+                            kpiCards.forEach(card => {
+                                card.className = card.className.replace(/col-\w+-\d+/g, '');
+                                
+                                switch(settings.layout) {
+                                    case '1-column':
+                                        card.classList.add('col-12');
+                                        break;
+                                    case '2-columns':
+                                        card.classList.add('col-lg-6', 'col-md-6');
+                                        break;
+                                    case '3-columns':
+                                        card.classList.add('col-lg-4', 'col-md-6');
+                                        break;
+                                    case '4-columns':
+                                    default:
+                                        card.classList.add('col-lg-3', 'col-md-6');
+                                        break;
+                                }
+                            });
+                        }
+                    }
+                    
+                    // Aplicar tema dos gráficos
+                    if (settings.chartTheme) {
+                        const chartTheme = document.getElementById('chartTheme');
+                        if (chartTheme) {
+                            chartTheme.value = settings.chartTheme;
+                        }
+                        document.body.setAttribute('data-chart-theme', settings.chartTheme);
+                    }
+                    
+                    // Aplicar densidade
+                    if (settings.dataDensity) {
+                        const dataDensity = document.getElementById('dataDensity');
+                        if (dataDensity) {
+                            dataDensity.value = settings.dataDensity;
+                        }
+                        document.body.setAttribute('data-density', settings.dataDensity);
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao carregar configurações do dashboard:', error);
+            }
+        }
         
         // Função para alternar painel de personalização
         function toggleDashboardCustomization() {
@@ -4479,7 +4780,8 @@
 
         // Format document (CPF/CNPJ)
         function formatDocument(value, type) {
-            value = value.replace(/\D/g, '');
+            if (!value) return '';
+            value = value.toString().replace(/\D/g, '');
             if (type === 'PF') {
                 return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
             } else {
@@ -7689,6 +7991,20 @@ ${mensagem}`;
           let revenueChart, statusChart, categoryChart;
 
           function initDashboardCharts() {
+              // Destruir gráficos existentes se houver
+              if (window.revenueChart && typeof window.revenueChart.destroy === 'function') {
+                  window.revenueChart.destroy();
+                  window.revenueChart = null;
+              }
+              if (window.statusChart && typeof window.statusChart.destroy === 'function') {
+                  window.statusChart.destroy();
+                  window.statusChart = null;
+              }
+              if (window.categoryChart && typeof window.categoryChart.destroy === 'function') {
+                  window.categoryChart.destroy();
+                  window.categoryChart = null;
+              }
+              
               initRevenueChart();
               initStatusChart();
               initCategoryChart();
@@ -7734,7 +8050,7 @@ ${mensagem}`;
                   despesas.push(dayDespesa);
               }
 
-              revenueChart = new Chart(ctx, {
+              window.revenueChart = new Chart(ctx, {
                   type: 'line',
                   data: {
                       labels: last7Days,
@@ -7793,7 +8109,7 @@ ${mensagem}`;
                   }
               });
 
-              statusChart = new Chart(ctx, {
+              window.statusChart = new Chart(ctx, {
                   type: 'doughnut',
                   data: {
                       labels: Object.keys(statusCount),
@@ -7836,7 +8152,7 @@ ${mensagem}`;
                   }
               });
 
-              categoryChart = new Chart(ctx, {
+              window.categoryChart = new Chart(ctx, {
                   type: 'bar',
                   data: {
                       labels: Object.keys(categoryData),
@@ -8445,15 +8761,175 @@ ${mensagem}`;
           
           // Função para aplicar personalização do dashboard
           function applyDashboardCustomization() {
-              addNotification('Personalização aplicada com sucesso!', 'success');
-              toggleDashboardCustomization();
+              try {
+                  // Aplicar configurações de widgets
+                  const widgetMappings = {
+                      'kpi': 'kpiCardsContainer',
+                      'charts': 'chartsContainer', 
+                      'reports': null, // Não tem container específico
+                      'recent': 'widget-recent-container',
+                      'calendar': 'widget-calendar-container',
+                      'weather': 'widget-weather-container'
+                  };
+                  
+                  Object.keys(widgetMappings).forEach(widget => {
+                      const checkbox = document.getElementById(`widget-${widget}`);
+                      const containerId = widgetMappings[widget];
+                      const container = containerId ? document.getElementById(containerId) : null;
+                      
+                      if (checkbox && container) {
+                          if (checkbox.checked) {
+                              container.style.display = '';
+                              container.classList.remove('d-none');
+                          } else {
+                              container.style.display = 'none';
+                              container.classList.add('d-none');
+                          }
+                      }
+                  });
+                  
+                  // Aplicar layout dos KPI cards
+                  const kpiLayout = document.getElementById('kpiLayout').value;
+                  const kpiContainer = document.getElementById('kpiCardsContainer') || 
+                                     document.querySelector('.row.mb-4');
+                  
+                  if (kpiContainer) {
+                      // Seleciona todos os cards filhos diretos que têm classes col-*
+                      const kpiCards = kpiContainer.querySelectorAll('[class*="col-"]');
+                      kpiCards.forEach(card => {
+                          // Remove todas as classes col-* existentes
+                          const classList = Array.from(card.classList);
+                          classList.forEach(className => {
+                              if (className.startsWith('col-')) {
+                                  card.classList.remove(className);
+                              }
+                          });
+                          
+                          // Aplica novas classes baseadas no layout
+                          switch(kpiLayout) {
+                              case '1-column':
+                                  card.classList.add('col-12');
+                                  break;
+                              case '2-columns':
+                                  card.classList.add('col-lg-6', 'col-md-6', 'col-sm-12');
+                                  break;
+                              case '3-columns':
+                                  card.classList.add('col-lg-4', 'col-md-6', 'col-sm-12');
+                                  break;
+                              case '4-columns':
+                              default:
+                                  card.classList.add('col-lg-3', 'col-md-6', 'col-sm-12');
+                                  break;
+                          }
+                      });
+                  }
+                  
+                  // Aplicar tema dos gráficos
+                  const chartTheme = document.getElementById('chartTheme').value;
+                  document.body.setAttribute('data-chart-theme', chartTheme);
+                  
+                  // Aplicar densidade de dados
+                  const dataDensity = document.getElementById('dataDensity').value;
+                  document.body.setAttribute('data-density', dataDensity);
+                  
+                  // Salvar configurações no localStorage
+                  const settings = {
+                      widgets: {},
+                      layout: kpiLayout,
+                      chartTheme: chartTheme,
+                      dataDensity: dataDensity
+                  };
+                  
+                  Object.keys(widgetMappings).forEach(widget => {
+                      const checkbox = document.getElementById(`widget-${widget}`);
+                      if (checkbox) {
+                          settings.widgets[widget] = checkbox.checked;
+                      }
+                  });
+                  
+                  localStorage.setItem('dashboardSettings', JSON.stringify(settings));
+                  
+                  addNotification('Personalização aplicada com sucesso!', 'success');
+                  toggleDashboardCustomization();
+                  
+              } catch (error) {
+                  console.error('Erro ao aplicar personalização:', error);
+                  addNotification('Erro ao aplicar personalização. Tente novamente.', 'error');
+              }
           }
           
           // Função para resetar layout do dashboard
           function resetDashboardLayout() {
               if (confirm('Tem certeza que deseja resetar o layout do dashboard?')) {
-                  addNotification('Layout resetado com sucesso!', 'info');
-                  toggleDashboardCustomization();
+                  try {
+                      // Restaurar todos os widgets para visíveis
+                      const widgetMappings = {
+                          'kpi': 'kpiCardsContainer',
+                          'charts': 'chartsContainer', 
+                          'reports': null, // Não tem container específico
+                          'recent': 'widget-recent-container',
+                          'calendar': 'widget-calendar-container',
+                          'weather': 'widget-weather-container'
+                      };
+                      
+                      Object.keys(widgetMappings).forEach(widget => {
+                          const checkbox = document.getElementById(`widget-${widget}`);
+                          const containerId = widgetMappings[widget];
+                          const container = containerId ? document.getElementById(containerId) : null;
+                          
+                          if (checkbox) {
+                              checkbox.checked = true;
+                          }
+                          
+                          if (container) {
+                              container.style.display = '';
+                              container.classList.remove('d-none');
+                          }
+                      });
+                      
+                      // Restaurar layout padrão (4 colunas)
+                      const kpiLayout = document.getElementById('kpiLayout');
+                      if (kpiLayout) {
+                          kpiLayout.value = '4-columns';
+                      }
+                      
+                      const kpiContainer = document.getElementById('kpiCardsContainer') || 
+                                         document.querySelector('.row.mb-4');
+                      
+                      if (kpiContainer) {
+                          const kpiCards = kpiContainer.querySelectorAll('[class*="col-"]');
+                          kpiCards.forEach(card => {
+                              // Remove classes existentes
+                              card.className = card.className.replace(/col-\w+-\d+/g, '');
+                              // Aplica layout padrão
+                              card.classList.add('col-lg-3', 'col-md-6');
+                          });
+                      }
+                      
+                      // Restaurar tema padrão
+                      const chartTheme = document.getElementById('chartTheme');
+                      if (chartTheme) {
+                          chartTheme.value = 'default';
+                      }
+                      document.body.removeAttribute('data-chart-theme');
+                      
+                      // Restaurar densidade padrão
+                      const dataDensity = document.getElementById('dataDensity');
+                      if (dataDensity) {
+                          dataDensity.value = 'normal';
+                      }
+                      document.body.removeAttribute('data-density');
+                      
+                      // Limpar configurações salvas
+                      localStorage.removeItem('dashboardSettings');
+                      
+                      addNotification('Layout resetado com sucesso!', 'info');
+                      toggleDashboardCustomization();
+                      
+                  } catch (error) {
+                      console.error('Erro ao resetar layout:', error);
+                      addNotification('Erro ao resetar layout. Tente novamente.', 'error');
+                  }
               }
           }
           
@@ -9327,14 +9803,27 @@ ${mensagem}`;
               }
 
               toggleWidget(widgetId) {
-                  const container = document.getElementById(`widget-${widgetId}-container`);
+                  const widgetMappings = {
+                      'kpi': 'kpiCardsContainer',
+                      'charts': 'chartsContainer', 
+                      'reports': null, // Não tem container específico
+                      'recent': 'widget-recent-container',
+                      'calendar': 'widget-calendar-container',
+                      'weather': 'widget-weather-container'
+                  };
+                  
+                  const containerId = widgetMappings[widgetId];
+                  const container = containerId ? document.getElementById(containerId) : null;
+                  
                   if (container) {
-                      const isHidden = container.classList.contains('hidden');
+                      const isHidden = container.classList.contains('hidden') || container.style.display === 'none';
                       if (isHidden) {
                           container.classList.remove('hidden');
+                          container.style.display = '';
                           this.settings.widgets[widgetId] = true;
                       } else {
                           container.classList.add('hidden');
+                          container.style.display = 'none';
                           this.settings.widgets[widgetId] = false;
                       }
                   }
