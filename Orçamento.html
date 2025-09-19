@@ -212,17 +212,65 @@
             font-weight: 600;
             color: var(--gray);
             border-bottom: 2px solid var(--border-color);
-            padding: 1rem 0.75rem;
+            padding: 0.5rem 0.75rem;
+            line-height: 1.2;
         }
         
         .table td {
-            padding: 0.75rem;
+            padding: 0.5rem 0.75rem;
             vertical-align: middle;
+            line-height: 1.3;
+        }
+        
+        /* Correção para tabelas que ocupam tela inteira */
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        
+        .table-responsive .table {
+            margin-bottom: 0;
+        }
+        
+        .table-responsive .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: var(--card-bg);
+            z-index: 10;
+            border-top: none;
+        }
+        
+        /* Altura mínima para tabelas vazias */
+        .table tbody:empty::after {
+            content: "";
+            display: block;
+            height: 100px;
+        }
+        
+        /* Estilo para mensagem de tabela vazia */
+        .table tbody tr td[colspan] {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+            font-style: italic;
         }
         
         .badge {
             font-weight: 500;
-            padding: 0.5em 0.75em;
+            padding: 0.35em 0.6em;
+            font-size: 0.75rem;
+        }
+        
+        /* Linhas mais compactas */
+        .table tbody tr {
+            height: auto;
+        }
+        
+        .table small {
+            font-size: 0.8rem;
+            line-height: 1.2;
         }
         
         .form-control, .form-select {
@@ -266,6 +314,24 @@
             
             .navbar-brand {
                 font-size: 1.25rem;
+            }
+            
+            /* Tabelas responsivas em mobile */
+            .table-responsive {
+                max-height: 300px;
+                font-size: 0.875rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.5rem 0.25rem;
+                white-space: nowrap;
+            }
+            
+            /* Ocultar colunas menos importantes em mobile */
+            .table th:nth-child(6),
+            .table td:nth-child(6) {
+                display: none;
             }
         }
         
@@ -790,6 +856,48 @@
         .chart-container {
             position: relative;
             animation: fadeIn 0.8s ease-out;
+        }
+        
+        /* Correção para canvas dos gráficos */
+        canvas {
+            max-width: 100% !important;
+            height: auto !important;
+            display: block;
+        }
+        
+        #revenueChart,
+        #statusChart,
+        #categoryChart {
+            max-height: 300px !important;
+            width: 100% !important;
+        }
+        
+        /* Evitar sobreposição e escurecimento */
+        .card-body canvas {
+            position: relative;
+            z-index: 1;
+            background: transparent;
+        }
+        
+        /* Prevenir problemas de modal backdrop */
+        .modal-backdrop {
+            z-index: 1040;
+        }
+        
+        .modal {
+            z-index: 1050;
+        }
+        
+        /* Evitar escurecimento indevido */
+        body:not(.modal-open) .modal-backdrop {
+            display: none !important;
+        }
+        
+        /* Garantir que os gráficos não causem overlay */
+        #chartsContainer {
+            position: relative;
+            z-index: auto;
+            overflow: visible;
         }
         
         /* Hover effects para cards de KPI */
@@ -6871,7 +6979,7 @@
             });
             
             if (movimentacoes.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center">Nenhuma movimentação encontrada</td></tr>';
+                tbody.innerHTML = '<tr class="empty-table-row"><td colspan="6" class="text-center text-muted py-4">Nenhuma movimentação encontrada</td></tr>';
             }
         }
 
