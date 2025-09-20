@@ -358,6 +358,16 @@
         
         .logo-preview {
             width: 200px;
+            height: 150px;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            overflow: hidden;
+            position: relative;
         }
         
         /* Preview Styles */
@@ -443,21 +453,13 @@
             font-size: 0.9rem;
             color: #666;
         }
-            height: 150px;
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            background-color: #f8f9fa;
-            overflow: hidden;
-        }
         
         .logo-preview img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .logo-placeholder {
@@ -7806,15 +7808,50 @@
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                const base64 = e.target.result;
-                
-                // Save logo to settings
-                const settings = JSON.parse(localStorage.getItem('settings') || '{}');
-                settings.logoBase64 = base64;
-                localStorage.setItem('settings', JSON.stringify(settings));
-                
-                displayLogo(base64);
-                showAlert('Logo carregada com sucesso!', 'success');
+                const img = new Image();
+                img.onload = function() {
+                    // Create canvas for resizing
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Define maximum dimensions (keeping aspect ratio)
+                    const maxWidth = 200;
+                    const maxHeight = 150;
+                    
+                    let { width, height } = img;
+                    
+                    // Calculate new dimensions maintaining aspect ratio
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height = (height * maxWidth) / width;
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width = (width * maxHeight) / height;
+                            height = maxHeight;
+                        }
+                    }
+                    
+                    // Set canvas dimensions
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    // Draw resized image
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Convert to base64
+                    const resizedBase64 = canvas.toDataURL('image/png', 0.9);
+                    
+                    // Save logo to settings
+                    const settings = JSON.parse(localStorage.getItem('settings') || '{}');
+                    settings.logoBase64 = resizedBase64;
+                    localStorage.setItem('settings', JSON.stringify(settings));
+                    
+                    displayLogo(resizedBase64);
+                    showAlert('Logo carregada e redimensionada com sucesso!', 'success');
+                };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
