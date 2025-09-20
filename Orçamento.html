@@ -5766,15 +5766,21 @@
 
         // Save cadastro
         function saveCadastro() {
+            console.log('Iniciando saveCadastro...');
             const form = document.getElementById('cadastroForm');
             const tipo = document.getElementById('cadastroTipo').value;
             const id = document.getElementById('cadastroId').value;
             
+            console.log('Tipo:', tipo, 'ID:', id);
+            
             // Validate form
             if (!form.checkValidity()) {
+                console.log('Formulário inválido');
                 form.reportValidity();
                 return;
             }
+            
+            console.log('Formulário válido, continuando...');
             
             // Get form data
             const tipoPessoa = document.getElementById('tipoPessoa').value;
@@ -5792,8 +5798,10 @@
             const especialidade = document.getElementById('especialidade').value;
             
             // Validate document
+            console.log('Validando documento:', documento, 'Tipo pessoa:', tipoPessoa);
             const isValidDocument = tipoPessoa === 'PF' ? validateCPF(documento) : validateCNPJ(documento);
             if (!isValidDocument) {
+                console.log('Documento inválido');
                 document.getElementById('documentoFeedback').textContent = 
                     tipoPessoa === 'PF' ? 'CPF inválido' : 'CNPJ inválido';
                 document.getElementById('documento').classList.add('is-invalid');
@@ -5802,16 +5810,21 @@
                 document.getElementById('documento').classList.remove('is-invalid');
             }
             
+            console.log('Documento válido, verificando duplicatas...');
+            
             // Check if document already exists (except for current record)
             const existingRecord = database[tipo + 's'].find(item => 
                 item.documento === documento && item.id !== id
             );
             if (existingRecord) {
+                console.log('Documento já existe');
                 document.getElementById('documentoFeedback').textContent = 
                     tipoPessoa === 'PF' ? 'CPF já cadastrado' : 'CNPJ já cadastrado';
                 document.getElementById('documento').classList.add('is-invalid');
                 return;
             }
+            
+            console.log('Documento único, criando registro...');
             
             // Create or update record
             const record = {
@@ -5846,12 +5859,29 @@
             
             saveToStorage(tipo + 's', database[tipo + 's']);
             
+            console.log('Dados salvos, fechando modal...');
+            
             // Close modal and refresh table
-            bootstrap.Modal.getInstance(document.getElementById('cadastroModal')).hide();
+            try {
+                const modalElement = document.getElementById('cadastroModal');
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                if (modalInstance) {
+                    modalInstance.hide();
+                    console.log('Modal fechado com sucesso');
+                } else {
+                    console.log('Instância do modal não encontrada, criando nova...');
+                    const newModal = new bootstrap.Modal(modalElement);
+                    newModal.hide();
+                }
+            } catch (error) {
+                console.error('Erro ao fechar modal:', error);
+            }
+            
             loadCadastroTable(tipo);
             
             // Show success message
             showAlert('success', `${tipo.charAt(0).toUpperCase() + tipo.slice(1)} salvo com sucesso!`);
+            console.log('Processo concluído');
         }
 
         // Delete cadastro
@@ -6418,7 +6448,7 @@
             
             loadOrcamentosTable();
             
-            showAlert('Orçamento salvo com sucesso!', 'success');
+            showAlert('success', 'Orçamento salvo com sucesso!');
         }
 
         // Filter functions
@@ -6503,7 +6533,7 @@
                 orcamentos = orcamentos.filter(o => o.id !== id);
                 localStorage.setItem('orcamentos', JSON.stringify(orcamentos));
                 loadOrcamentosTable();
-                showAlert('Orçamento excluído com sucesso!', 'success');
+                showAlert('success', 'Orçamento excluído com sucesso!');
             }
         }
 
@@ -6513,7 +6543,7 @@
                 const orcamentoIndex = orcamentos.findIndex(o => o.id === id);
                 
                 if (orcamentoIndex === -1) {
-                    showAlert('Orçamento não encontrado!', 'error');
+                    showAlert('error', 'Orçamento não encontrado!');
                     return;
                 }
 
@@ -6565,7 +6595,7 @@
 
                 // Atualizar tabela e mostrar sucesso
                 loadOrcamentosTable();
-                showAlert(`Orçamento aprovado com sucesso! Obra ${novaObra.numero} criada.`, 'success');
+                showAlert('success', `Orçamento aprovado com sucesso! Obra ${novaObra.numero} criada.`);
             }
         }
 
@@ -6599,7 +6629,7 @@
             const orcamento = orcamentos.find(o => o.id === id);
             
             if (!orcamento) {
-                showAlert('Orçamento não encontrado!', 'error');
+                showAlert('error', 'Orçamento não encontrado!');
                 return;
             }
 
