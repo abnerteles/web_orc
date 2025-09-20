@@ -15,7 +15,7 @@
     <meta name="msapplication-config" content="/browserconfig.xml">
     
     <!-- Manifest -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="./manifest.json">
     
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
@@ -2301,7 +2301,7 @@
                         <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Perfil</a></li>
                         <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configurações</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
+                        <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
                     </ul>
                 </div>
             </div>
@@ -4811,11 +4811,96 @@
         </div>
     </div>
 
+    <!-- Modal Editar Usuário -->
+    <div class="modal fade" id="editUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-user-edit me-2"></i>Editar Usuário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserForm">
+                        <input type="hidden" id="editUserId">
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editFirstName" class="form-label">Nome *</label>
+                                <input type="text" class="form-control" id="editFirstName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editLastName" class="form-label">Sobrenome *</label>
+                                <input type="text" class="form-control" id="editLastName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="editEmail" class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="editEmail" required>
+                        </div>
+                        
+                        <hr style="margin: 1.5rem 0; border-color: #e5e7eb;">
+                        <h6 style="color: #374151; margin-bottom: 1rem;">
+                            <i class="fas fa-crown me-2" style="color: #f59e0b;"></i>
+                            Configurações de Subscription
+                        </h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editPlan" class="form-label">
+                                    <i class="bi bi-star me-2"></i>Plano de Subscription
+                                </label>
+                                <select class="form-control" id="editPlan">
+                                    <option value="trial">Trial (7 dias grátis)</option>
+                                    <option value="monthly">Mensal</option>
+                                    <option value="annual">Anual</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editStatus" class="form-label">
+                                    <i class="bi bi-check-circle me-2"></i>Status
+                                </label>
+                                <select class="form-control" id="editStatus">
+                                    <option value="trial">Trial</option>
+                                    <option value="active">Ativo</option>
+                                    <option value="suspended">Suspenso</option>
+                                    <option value="expired">Expirado</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="editEndDate" class="form-label">
+                                <i class="bi bi-calendar me-2"></i>Data de Expiração
+                            </label>
+                            <input type="date" class="form-control" id="editEndDate">
+                            <div class="form-text">
+                                Deixe em branco para usar a duração padrão do plano
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveUserChanges()">
+                        <i class="fas fa-save me-2"></i>Salvar Alterações
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Teste simples de funcionalidade
-        document.addEventListener('DOMContentLoaded', function() {
+        // Proteção global contra execução múltipla de DOMContentLoaded
+        if (window.domContentLoadedExecuted) {
+            console.log('DOMContentLoaded já foi executado, ignorando execuções subsequentes');
+        } else {
+            window.domContentLoadedExecuted = true;
+            
+            // Teste simples de funcionalidade
+            document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM carregado - testando funcionalidades básicas');
             
             // Teste do botão de tema
@@ -4843,6 +4928,19 @@
                 });
             } else {
                 console.error('Botão de tema não encontrado!');
+            }
+            
+            // Event listener para o botão de logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                console.log('Botão de logout encontrado, adicionando evento');
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Botão de logout clicado!');
+                    logout();
+                });
+            } else {
+                console.error('Botão de logout não encontrado!');
             }
             
             // Teste dos links de navegação
@@ -9581,7 +9679,7 @@ ${mensagem}`;
               addNotification('Orçamento salvo com sucesso!', 'success');
           }
           
-          function saveSettings() {
+          function saveBasicSettings() {
               addNotification('Configurações salvas com sucesso!', 'success');
           }
           
@@ -11441,6 +11539,9 @@ ${mensagem}`;
               
               // Reset form
               document.getElementById('registerForm').reset();
+              
+              // Toggle subscription fields based on user role
+              setTimeout(toggleSubscriptionFields, 100);
           }
 
           function hideRegisterModal() {
@@ -11608,7 +11709,10 @@ ${mensagem}`;
           }
 
           // Register form submission
-          document.getElementById('registerForm').addEventListener('submit', function(e) {
+          const registerForm = document.getElementById('registerForm');
+          if (registerForm && !registerForm.hasAttribute('data-listener-added')) {
+              registerForm.setAttribute('data-listener-added', 'true');
+              registerForm.addEventListener('submit', function(e) {
               e.preventDefault();
               
               // Get form data
@@ -11646,7 +11750,7 @@ ${mensagem}`;
                               case 'monthly':
                                   endDate.setMonth(now.getMonth() + 1); // 1 mês
                                   break;
-                              case 'yearly':
+                              case 'annual':
                                   endDate.setFullYear(now.getFullYear() + 1); // 1 ano
                                   break;
                               default:
@@ -11685,14 +11789,19 @@ ${mensagem}`;
               } catch (error) {
                   showRegisterError(error.message);
               }
-          });
+              });
+          }
 
           // Close register modal when clicking outside
-          document.getElementById('registerModal').addEventListener('click', function(e) {
-              if (e.target === this) {
-                  hideRegisterModal();
-              }
-          });
+          const registerModal = document.getElementById('registerModal');
+          if (registerModal && !registerModal.hasAttribute('data-click-listener-added')) {
+              registerModal.setAttribute('data-click-listener-added', 'true');
+              registerModal.addEventListener('click', function(e) {
+                  if (e.target === this) {
+                      hideRegisterModal();
+                  }
+              });
+          }
 
           // Close register modal with Escape key
           document.addEventListener('keydown', function(e) {
@@ -11902,13 +12011,27 @@ ${mensagem}`;
               const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
               const userIndex = users.findIndex(u => u.id === userId);
               
-              if (userIndex === -1) return false;
+              if (userIndex === -1) {
+                  return false;
+              }
               
               const user = users[userIndex];
               const plan = SUBSCRIPTION_PLANS[planType];
+              
+              if (!plan) {
+                  return false;
+              }
+              
               const startDate = new Date();
               const endDate = new Date();
               endDate.setDate(startDate.getDate() + plan.duration);
+              
+              // Garantir que o usuário tenha uma subscription
+              if (!user.subscription) {
+                  user.subscription = {
+                      paymentHistory: []
+                  };
+              }
               
               user.subscription = {
                   ...user.subscription,
@@ -11917,7 +12040,7 @@ ${mensagem}`;
                   startDate: startDate.toISOString(),
                   endDate: endDate.toISOString(),
                   paymentHistory: [
-                      ...user.subscription.paymentHistory,
+                      ...(user.subscription.paymentHistory || []),
                       {
                           date: startDate.toISOString(),
                           plan: planType,
@@ -12027,10 +12150,15 @@ ${mensagem}`;
               alert('Sua subscription expirou! Entre em contato com o administrador para renovar.');
           }
 
-          // Atualizar função de registro para incluir subscription
-          const originalRegisterUser = registerUser;
-          function registerUser(userData) {
-              const newUser = originalRegisterUser(userData);
+          // Função para registrar usuário com subscription
+          function registerUserWithSubscription(userData) {
+              // Primeiro registra o usuário usando a função original
+              const registrationResult = registerUser(userData);
+              if (!registrationResult.success) {
+                  return registrationResult;
+              }
+              
+              const newUser = registrationResult.user;
               
               // Adicionar subscription trial para novos usuários
               newUser.subscription = createUserSubscription('trial');
@@ -12042,7 +12170,7 @@ ${mensagem}`;
               users[userIndex] = newUser;
               localStorage.setItem('registeredUsers', JSON.stringify(users));
               
-              return newUser;
+              return { success: true, user: newUser };
           }
 
 
@@ -12147,6 +12275,19 @@ ${mensagem}`;
               
               tbody.innerHTML = '';
               
+              // Corrigir dados incorretos no localStorage
+              users.forEach(user => {
+                  if (user.subscription && user.subscription.plan) {
+                      // Corrigir possíveis erros de digitação no plano
+                      if (user.subscription.plan.includes('annua') || user.subscription.plan.includes('Annua')) {
+                          user.subscription.plan = 'annual';
+                      }
+                  }
+              });
+              
+              // Salvar dados corrigidos
+              localStorage.setItem('registeredUsers', JSON.stringify(users));
+              
               users.forEach(user => {
                   const subscriptionInfo = getSubscriptionInfo(user);
                   const row = document.createElement('tr');
@@ -12156,14 +12297,20 @@ ${mensagem}`;
                       (subscriptionInfo.isExpired ? 'Expirado' : 
                        new Date(user.subscription.endDate).toLocaleDateString('pt-BR')) : 'N/A';
                   
+                  const planName = user.subscription?.plan ? 
+                      (SUBSCRIPTION_PLANS[user.subscription.plan]?.name || user.subscription.plan) : 'N/A';
+                  
                   row.innerHTML = `
                       <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">${user.firstName} ${user.lastName}</td>
                       <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">${user.email}</td>
-                      <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">${user.subscription?.plan || 'N/A'}</td>
+                      <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">${planName}</td>
                       <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">${statusBadge}</td>
                       <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">${expiryDate}</td>
                       <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
                           <div style="display: flex; gap: 0.5rem;">
+                              <button onclick="editUser('${user.id}')" class="btn btn-primary btn-sm" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" title="Editar usuário">
+                                  <i class="fas fa-edit"></i>
+                              </button>
                               <button onclick="suspendUser('${user.id}')" class="btn btn-warning btn-sm" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">
                                   <i class="fas fa-pause"></i>
                               </button>
@@ -12227,7 +12374,110 @@ ${mensagem}`;
               }
           }
 
-          // Popular select de usuários para renovação
+          // Editar usuário
+          function editUser(userId) {
+              const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+              const user = users.find(u => u.id === userId);
+              
+              if (!user) {
+                  alert('Usuário não encontrado!');
+                  return;
+              }
+              
+              // Preencher o modal de edição
+              document.getElementById('editUserId').value = user.id;
+              document.getElementById('editFirstName').value = user.firstName;
+              document.getElementById('editLastName').value = user.lastName;
+              document.getElementById('editEmail').value = user.email;
+              document.getElementById('editPlan').value = user.subscription?.plan || 'trial';
+              document.getElementById('editStatus').value = user.subscription?.status || 'trial';
+              
+              if (user.subscription?.endDate) {
+                  document.getElementById('editEndDate').value = user.subscription.endDate.split('T')[0];
+              }
+              
+              // Mostrar o modal
+               const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+               modal.show();
+           }
+
+           // Salvar alterações do usuário
+           function saveUserChanges() {
+               const userId = document.getElementById('editUserId').value;
+               const firstName = document.getElementById('editFirstName').value;
+               const lastName = document.getElementById('editLastName').value;
+               const email = document.getElementById('editEmail').value;
+               const plan = document.getElementById('editPlan').value;
+               const status = document.getElementById('editStatus').value;
+               const endDate = document.getElementById('editEndDate').value;
+               
+               if (!firstName || !lastName || !email) {
+                   alert('Por favor, preencha todos os campos obrigatórios.');
+                   return;
+               }
+               
+               const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+               const userIndex = users.findIndex(u => u.id === userId);
+               
+               if (userIndex === -1) {
+                   alert('Usuário não encontrado!');
+                   return;
+               }
+               
+               // Atualizar dados do usuário
+               users[userIndex].firstName = firstName;
+               users[userIndex].lastName = lastName;
+               users[userIndex].email = email;
+               
+               // Atualizar subscription
+               if (!users[userIndex].subscription) {
+                   users[userIndex].subscription = {};
+               }
+               
+               users[userIndex].subscription.plan = plan;
+               users[userIndex].subscription.status = status;
+               
+               // Calcular data de expiração se não fornecida
+               if (endDate) {
+                   users[userIndex].subscription.endDate = endDate + 'T23:59:59.999Z';
+               } else {
+                   // Usar duração padrão do plano
+                   const now = new Date();
+                   let duration;
+                   
+                   switch (plan) {
+                       case 'trial':
+                           duration = 7; // 7 dias
+                           break;
+                       case 'monthly':
+                           duration = 30; // 30 dias
+                           break;
+                       case 'annual':
+                           duration = 365; // 365 dias
+                           break;
+                       default:
+                           duration = 7;
+                   }
+                   
+                   const endDate = new Date(now.getTime() + (duration * 24 * 60 * 60 * 1000));
+                   users[userIndex].subscription.endDate = endDate.toISOString();
+               }
+               
+               // Salvar no localStorage
+               localStorage.setItem('registeredUsers', JSON.stringify(users));
+               
+               // Fechar modal
+               const modal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
+               modal.hide();
+               
+               // Atualizar lista de usuários
+               refreshUsersList();
+               updateSubscriptionStats();
+               
+               alert('Usuário atualizado com sucesso!');
+           }
+
+           // Popular select de usuários para renovação
           function populateRenewUserSelect() {
               const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
               const select = document.getElementById('renewUserId');
@@ -12320,7 +12570,8 @@ ${mensagem}`;
           // Formulário de renovação de subscription
           document.addEventListener('DOMContentLoaded', function() {
               const renewForm = document.getElementById('renewSubscriptionForm');
-              if (renewForm) {
+              if (renewForm && !renewForm.hasAttribute('data-listener-added')) {
+                  renewForm.setAttribute('data-listener-added', 'true');
                   renewForm.addEventListener('submit', function(e) {
                       e.preventDefault();
                       
@@ -12705,49 +12956,15 @@ ${mensagem}`;
               }
           });
 
-          // Atualizar função de mostrar modal de registro
-          const originalShowRegisterModal = showRegisterModal;
-          function showRegisterModal() {
-              originalShowRegisterModal();
-              setTimeout(toggleSubscriptionFields, 100);
-          }
+
 
           // Função para gerar ID único
           function generateUserId() {
               return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
           }
 
-          // Mostrar erro de registro
-          function showRegisterError(message) {
-              const errorDiv = document.getElementById('registerError');
-              const errorMessage = document.getElementById('registerErrorMessage');
-              const successDiv = document.getElementById('registerSuccess');
-              
-              if (errorDiv && errorMessage) {
-                  errorMessage.textContent = message;
-                  errorDiv.style.display = 'block';
-              }
-              
-              if (successDiv) {
-                  successDiv.style.display = 'none';
-              }
-          }
+        } // Fim do bloco de proteção global DOMContentLoaded
 
-          // Mostrar sucesso de registro
-          function showRegisterSuccess(message) {
-              const successDiv = document.getElementById('registerSuccess');
-              const successMessage = document.getElementById('registerSuccessMessage');
-              const errorDiv = document.getElementById('registerError');
-              
-              if (successDiv && successMessage) {
-                  successMessage.textContent = message;
-                  successDiv.style.display = 'block';
-              }
-              
-              if (errorDiv) {
-                  errorDiv.style.display = 'none';
-              }
-          }
     </script>
     
     <!-- Toast Notifications Container -->
