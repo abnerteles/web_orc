@@ -2298,8 +2298,8 @@
                         <span class="ms-1" id="currentUserName">Usuário</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Perfil</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configurações</a></li>
+                        <li><a class="dropdown-item" href="#" data-page="perfil"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                        <li><a class="dropdown-item" href="#" data-page="configuracoes"><i class="bi bi-gear me-2"></i>Configurações</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
                     </ul>
@@ -4673,6 +4673,105 @@
             </div>
         </div>
 
+        <!-- Perfil Page -->
+        <div class="page" id="perfil">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="bi bi-person me-2"></i>Perfil do Usuário</h2>
+                <button class="btn btn-success" onclick="saveProfile()">
+                    <i class="bi bi-check-lg me-1"></i>Salvar Perfil
+                </button>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="bi bi-person-circle me-2"></i>Informações Pessoais</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="profileForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="profileFirstName" class="form-label">Nome *</label>
+                                        <input type="text" class="form-control" id="profileFirstName" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="profileLastName" class="form-label">Sobrenome *</label>
+                                        <input type="text" class="form-control" id="profileLastName" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="profileEmail" class="form-label">Email *</label>
+                                        <input type="email" class="form-control" id="profileEmail" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="profilePhone" class="form-label">Telefone</label>
+                                        <input type="tel" class="form-control" id="profilePhone">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="profileCompany" class="form-label">Empresa</label>
+                                    <input type="text" class="form-control" id="profileCompany">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="bi bi-shield-lock me-2"></i>Alterar Senha</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="passwordForm">
+                                <div class="mb-3">
+                                    <label for="currentPassword" class="form-label">Senha Atual *</label>
+                                    <input type="password" class="form-control" id="currentPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">Nova Senha *</label>
+                                    <input type="password" class="form-control" id="newPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Confirmar Nova Senha *</label>
+                                    <input type="password" class="form-control" id="confirmPassword" required>
+                                </div>
+                                <button type="button" class="btn btn-warning" onclick="changePassword()">
+                                    <i class="bi bi-key me-1"></i>Alterar Senha
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Informações da Conta</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Plano Atual</label>
+                                <div id="currentPlan" class="fw-bold text-primary">-</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <div id="accountStatus">-</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Data de Vencimento</label>
+                                <div id="expiryDate" class="text-muted">-</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Membro desde</label>
+                                <div id="memberSince" class="text-muted">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Configurações Page -->
         <div class="page" id="configuracoes">
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -4964,6 +5063,13 @@
                     if (targetElement) {
                         targetElement.classList.add('active');
                         console.log('Página ativada:', targetPage);
+                        
+                        // Carregar dados específicos da página
+                        if (targetPage === 'perfil') {
+                            loadProfile();
+                        } else if (targetPage === 'configuracoes') {
+                            loadSettings();
+                        }
                     } else {
                         console.error('Página não encontrada:', targetPage);
                     }
@@ -7756,6 +7862,119 @@
             }
             const sizeInKB = (totalSize / 1024).toFixed(2);
             document.getElementById('storageInfo').textContent = `${sizeInKB} KB`;
+        }
+
+        // ===== PROFILE FUNCTIONS =====
+
+        // Load profile data
+        function loadProfile() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const user = users.find(u => u.id === currentUser.id);
+            
+            if (user) {
+                document.getElementById('profileFirstName').value = user.firstName || '';
+                document.getElementById('profileLastName').value = user.lastName || '';
+                document.getElementById('profileEmail').value = user.email || '';
+                document.getElementById('profilePhone').value = user.phone || '';
+                document.getElementById('profileCompany').value = user.company || '';
+                
+                // Load account info
+                const planName = user.subscription?.plan ? 
+                    (SUBSCRIPTION_PLANS[user.subscription.plan]?.name || user.subscription.plan) : 'Não definido';
+                document.getElementById('currentPlan').textContent = planName;
+                
+                const statusBadge = getStatusBadge(user.subscription?.status || 'inactive');
+                document.getElementById('accountStatus').innerHTML = statusBadge;
+                
+                const expiryDate = user.subscription?.endDate ? 
+                    new Date(user.subscription.endDate).toLocaleDateString('pt-BR') : 'N/A';
+                document.getElementById('expiryDate').textContent = expiryDate;
+                
+                const memberSince = user.createdAt ? 
+                    new Date(user.createdAt).toLocaleDateString('pt-BR') : 'N/A';
+                document.getElementById('memberSince').textContent = memberSince;
+            }
+        }
+
+        // Save profile data
+        function saveProfile() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex !== -1) {
+                // Update user data
+                users[userIndex].firstName = document.getElementById('profileFirstName').value;
+                users[userIndex].lastName = document.getElementById('profileLastName').value;
+                users[userIndex].email = document.getElementById('profileEmail').value;
+                users[userIndex].phone = document.getElementById('profilePhone').value;
+                users[userIndex].company = document.getElementById('profileCompany').value;
+                
+                // Update current user session
+                currentUser.firstName = users[userIndex].firstName;
+                currentUser.lastName = users[userIndex].lastName;
+                currentUser.email = users[userIndex].email;
+                
+                // Save to localStorage
+                localStorage.setItem('registeredUsers', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                // Update navbar display
+                document.getElementById('currentUserName').textContent = 
+                    `${currentUser.firstName} ${currentUser.lastName}`;
+                
+                showAlert('Perfil atualizado com sucesso!', 'success');
+            } else {
+                showAlert('Erro ao atualizar perfil. Usuário não encontrado.', 'error');
+            }
+        }
+
+        // Change password
+        function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showAlert('Todos os campos de senha são obrigatórios.', 'error');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                showAlert('A nova senha e a confirmação não coincidem.', 'error');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                showAlert('A nova senha deve ter pelo menos 6 caracteres.', 'error');
+                return;
+            }
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex !== -1) {
+                // Verify current password (simplified - in real app would be hashed)
+                if (users[userIndex].password !== currentPassword) {
+                    showAlert('Senha atual incorreta.', 'error');
+                    return;
+                }
+                
+                // Update password
+                users[userIndex].password = newPassword;
+                localStorage.setItem('registeredUsers', JSON.stringify(users));
+                
+                // Clear form
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+                
+                showAlert('Senha alterada com sucesso!', 'success');
+            } else {
+                showAlert('Erro ao alterar senha. Usuário não encontrado.', 'error');
+            }
         }
 
         // Export all data
