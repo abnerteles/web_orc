@@ -3,6 +3,7 @@
  * for Docker builds.
  */
 import "./src/env.js";
+import path from "path";
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -15,6 +16,10 @@ const config = {
     // Warning: This allows production builds to successfully complete even if
     // your project has TypeScript errors.
     ignoreBuildErrors: true,
+  },
+  webpack: (config) => {
+    config.resolve.alias["~"] = path.resolve("./src");
+    return config;
   },
 };
 
