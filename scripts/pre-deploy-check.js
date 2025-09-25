@@ -20,7 +20,7 @@ async function runPreDeployChecks() {
       allChecksPass = false;
     }
   } catch (error) {
-    console.log('   ❌ Erro ao verificar build:', error.message);
+    console.log('   ❌ Erro ao verificar build:', error instanceof Error ? error.message : String(error));
     allChecksPass = false;
   }
   
@@ -45,7 +45,7 @@ async function runPreDeployChecks() {
     `;
     
     const expectedTables = ['User', 'Account', 'Session', 'Cliente', 'Orcamento'];
-    const foundTables = tables.map(t => t.table_name);
+    const foundTables = Array.isArray(tables) ? tables.map(t => t.table_name) : [];
     
     for (const table of expectedTables) {
       if (foundTables.includes(table)) {
@@ -57,7 +57,7 @@ async function runPreDeployChecks() {
     }
     
   } catch (error) {
-    console.log('   ❌ Erro na conexão com banco:', error.message);
+    console.log('   ❌ Erro na conexão com banco:', error instanceof Error ? error.message : String(error));
     allChecksPass = false;
   } finally {
     await prisma.$disconnect();
@@ -101,7 +101,7 @@ async function runPreDeployChecks() {
     }
     
   } catch (error) {
-    console.log('   ❌ Erro ao ler vercel.json:', error.message);
+    console.log('   ❌ Erro ao ler vercel.json:', error instanceof Error ? error.message : String(error));
     allChecksPass = false;
   }
   
@@ -127,7 +127,7 @@ async function runPreDeployChecks() {
     }
     
   } catch (error) {
-    console.log('   ❌ Erro ao ler .env.production.example:', error.message);
+    console.log('   ❌ Erro ao ler .env.production.example:', error instanceof Error ? error.message : String(error));
     allChecksPass = false;
   }
   

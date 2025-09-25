@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "gestao-orcamentos-nextjs",
   "framework": "nextjs",
   "functions": {
     "src/app/api/**/*.ts": {
@@ -8,14 +7,10 @@
       "maxDuration": 30
     }
   },
-  "env": {
-    "NODE_ENV": "production"
-  },
   "build": {
     "env": {
       "SKIP_ENV_VALIDATION": "1"
     }
   },
-  "regions": ["iad1"],
-  "crons": []
+  "regions": ["iad1"]
 }
