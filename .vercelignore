@@ -1,0 +1,5 @@
+gestao-orcamentos-nextjs/
+.git/
+*.md
+README*
+.gitignore
