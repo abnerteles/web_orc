@@ -2,6 +2,8 @@
 
 Sistema completo para gestão de orçamentos e obras desenvolvido com Next.js 15, TypeScript e Tailwind CSS.
 
+<!-- Build test: 2025-01-25 -->
+
 ## 🚀 Tecnologias
 
 - **Next.js 15** - Framework React com App Router
