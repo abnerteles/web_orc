@@ -93,7 +93,7 @@ export default function NovoOrcamentoPage() {
       };
 
       // Salvar no localStorage (temporário)
-      const orcamentosExistentes = JSON.parse(localStorage.getItem("orcamentos") || "[]");
+      const orcamentosExistentes: any[] = JSON.parse(localStorage.getItem("orcamentos") ?? "[]") as any[];
       orcamentosExistentes.push(orcamento);
       localStorage.setItem("orcamentos", JSON.stringify(orcamentosExistentes));
 

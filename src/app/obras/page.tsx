@@ -63,7 +63,7 @@ export default function ObrasPage() {
       dataCreacao: new Date().toISOString()
     };
 
-    const obrasExistentes = JSON.parse(localStorage.getItem("obras") || "[]");
+    const obrasExistentes: Obra[] = JSON.parse(localStorage.getItem("obras") || "[]") as Obra[];
     obrasExistentes.push(obra);
     localStorage.setItem("obras", JSON.stringify(obrasExistentes));
 
@@ -79,40 +79,6 @@ export default function ObrasPage() {
       observacoes: ""
     });
     setShowForm(false);
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "planejamento":
-        return "bg-gray-100 text-gray-800";
-      case "em_andamento":
-        return "bg-blue-100 text-blue-800";
-      case "pausada":
-        return "bg-yellow-100 text-yellow-800";
-      case "concluida":
-        return "bg-green-100 text-green-800";
-      case "cancelada":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case "planejamento":
-        return "Planejamento";
-      case "em_andamento":
-        return "Em Andamento";
-      case "pausada":
-        return "Pausada";
-      case "concluida":
-        return "Concluída";
-      case "cancelada":
-        return "Cancelada";
-      default:
-        return status;
-    }
   };
 
   return (
