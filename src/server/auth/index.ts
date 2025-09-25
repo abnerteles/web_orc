@@ -1,13 +1,19 @@
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthOptions } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { cache } from "react";
 
 import { authConfig } from "./config";
 
-const { auth: uncachedAuth, handlers, signIn, signOut } = NextAuth(authConfig);
+// NextAuth v4 configuration
+export default NextAuth(authConfig as NextAuthOptions);
 
-const auth = cache(uncachedAuth);
+// For API routes
+export const handlers = NextAuth(authConfig as NextAuthOptions);
+
+// Server-side auth function
+const auth = cache(() => getServerSession(authConfig as NextAuthOptions));
 
 // Alias para compatibilidade
 const getServerAuthSession = auth;
 
-export { auth, handlers, signIn, signOut, getServerAuthSession };
+export { auth, getServerAuthSession };
