@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão de Orçamentos</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-calculator"></i>
+                    <h1>OrcPlus</h1>
+                </div>
+                <nav class="nav">
+                    <button class="nav-btn active" data-section="dashboard">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </button>
+                    <button class="nav-btn" data-section="orcamentos">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Orçamentos
+                    </button>
+                    <button class="nav-btn" data-section="clientes">
+                        <i class="fas fa-users"></i>
+                        Clientes
+                    </button>
+                    <button class="nav-btn" data-section="relatorios">
+                        <i class="fas fa-chart-bar"></i>
+                        Relatórios
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h2>Dashboard</h2>
+                    <p>Visão geral do seu negócio</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-orcamentos">0</h3>
+                            <p>Orçamentos Criados</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="orcamentos-aprovados">0</h3>
+                            <p>Orçamentos Aprovados</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="valor-total">R$ 0,00</h3>
+                            <p>Valor Total</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-clientes">0</h3>
+                            <p>Clientes Cadastrados</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Atividade Recente</h3>
+                    <div id="recent-list" class="activity-list">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>Nenhuma atividade recente</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Orçamentos Section -->
+            <section id="orcamentos" class="section">
+                <div class="section-header">
+                    <h2>Orçamentos</h2>
+                    <button class="btn btn-primary" id="novo-orcamento-btn">
+                        <i class="fas fa-plus"></i>
+                        Novo Orçamento
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Descrição</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orcamentos-table">
+                            <tr class="empty-row">
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <i class="fas fa-file-invoice"></i>
+                                        <p>Nenhum orçamento encontrado</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Clientes Section -->
+            <section id="clientes" class="section">
+                <div class="section-header">
+                    <h2>Clientes</h2>
+                    <button class="btn btn-primary" id="novo-cliente-btn">
+                        <i class="fas fa-plus"></i>
+                        Novo Cliente
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Telefone</th>
+                                <th>Cidade</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientes-table">
+                            <tr class="empty-row">
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <i class="fas fa-users"></i>
+                                        <p>Nenhum cliente encontrado</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Relatórios Section -->
+            <section id="relatorios" class="section">
+                <div class="section-header">
+                    <h2>Relatórios</h2>
+                    <p>Análise detalhada dos seus dados</p>
+                </div>
+                
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h3>Orçamentos por Status</h3>
+                        <canvas id="status-chart"></canvas>
+                    </div>
+                    
+                    <div class="report-card">
+                        <h3>Faturamento Mensal</h3>
+                        <canvas id="revenue-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Título do Modal</h3>
+                <button class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Conteúdo dinâmico -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js?v=5"></script>
+</body>
+</html>
