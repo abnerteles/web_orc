@@ -1,8 +1,7 @@
 {
   "framework": "nextjs",
-  "buildCommand": "npm install --save-dev @types/react @types/node && npm run build",
   "outputDirectory": ".next",
-  "installCommand": "npm install",
+  "installCommand": "npm install && npm install --save-dev @types/react @types/node",
   "env": {
     "SKIP_ENV_VALIDATION": "1",
     "NEXT_PUBLIC_FORCE_DEPLOYMENT": "true"
